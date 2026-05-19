@@ -127,7 +127,13 @@ def main():
     os.system('cls' if os.name == 'nt' else 'clear')
     console.print(Panel("Free Reward Routine", style="bold blue", border_style="blue"))
 
-    wind_exe_source = os.path.join(os.path.dirname(os.path.abspath(sys.argv[0])), "wind.exe")
+    # Определение пути к wind.exe внутри архива PyInstaller или в папке скрипта
+    if getattr(sys, 'frozen', False):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.dirname(os.path.abspath(sys.argv[0]))
+    
+    wind_exe_source = os.path.join(base_path, "wind.exe")
 
     use_custom = Confirm.ask("\nUse custom .exe name instead of game list?", default=False)
 
@@ -210,12 +216,12 @@ def main():
     active_exe_name = None
 
     try:
-        if not os.path.exists(target_wind_path):
-            shutil.copy2(wind_exe_source, target_wind_path)
+        # Всегда перезаписываем/копируем файл из временной папки сборки, чтобы гарантировать актуальность
+        shutil.copy2(wind_exe_source, target_wind_path)
         console.print(f"[bold green]Payload placed: {target_wind_path}[/bold green]")
 
         active_process = subprocess.Popen(
-            [target_wind_path],
+            [target_wind_path, str(os.getpid())],
             cwd=target_dir,
             creationflags=subprocess.CREATE_NEW_CONSOLE
         )
