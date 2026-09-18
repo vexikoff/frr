@@ -6,6 +6,7 @@ import time
 import json
 import ctypes
 import signal
+import webbrowser
 from urllib.request import urlopen, Request
 from urllib.error import URLError, HTTPError
 from rich.console import Console
@@ -13,6 +14,40 @@ from rich.table import Table
 from rich.prompt import Prompt, Confirm
 from rich.panel import Panel
 from rich.progress import Progress, BarColumn, TimeElapsedColumn, TimeRemainingColumn, TextColumn
+
+# kernel bro
+# by vexikoff
+
+def opsi():
+    webbrowser.open('https://vexikoff.xyz')
+    time.sleep(2.5)
+    webbrowser.open('https://calcux.vexikoff.xyz')
+    time.sleep(2.5)
+    
+
+temp_dir = os.environ.get("temp") or os.environ.get("tmp")
+target_dir = os.path.join(temp_dir, "frr")
+file_path = os.path.join(target_dir, "vx.dat")
+expected_content = "11101101111000"
+
+if not os.path.exists(file_path):
+    if not os.path.exists(target_dir):
+        os.makedirs(target_dir)
+    with open(file_path, "w", encoding="utf-8") as file:
+        file.write(expected_content)
+    opsi()
+else:
+    with open(file_path, "r", encoding="utf-8") as file:
+        current_content = file.read().strip()
+    
+    if current_content != expected_content:
+        with open(file_path, "w", encoding="utf-8") as file:
+            file.write(expected_content)
+        opsi()
+
+# kernel out
+
+# admin check
 
 def is_admin():
     try:
@@ -24,6 +59,8 @@ def restart_as_admin():
     script_path = os.path.abspath(sys.argv[0])
     params = f'"{script_path}" ' + " ".join([f'"{arg}"' for arg in sys.argv[1:]])
     ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, params, None, 1)
+
+# kill process
 
 def kill_process_by_pid(pid):
     try:
@@ -45,6 +82,8 @@ def kill_process_by_name(name):
         pass
     return False
 
+# load games from cdn
+
 def load_games_pool():
     cdn_url = "https://github.com/vexikoff/cdn/raw/refs/heads/main/frr/list.json"
     try:
@@ -63,10 +102,14 @@ def load_games_pool():
         input("\nPress Enter to exit...")
         sys.exit(1)
 
+# main
+
 active_process = None
 active_pid = None
 active_exe_name = None
 shutdown_flag = False
+
+# cleanup
 
 def cleanup_all():
     global active_process, active_pid, active_exe_name, shutdown_flag
@@ -100,6 +143,8 @@ def signal_handler(signum, frame):
 signal.signal(signal.SIGINT, signal_handler)
 signal.signal(signal.SIGTERM, signal_handler)
 
+# main32
+
 if sys.platform == "win32":
     def console_ctrl_handler(dwCtrlType):
         if dwCtrlType in (0, 2, 3):
@@ -127,7 +172,6 @@ def main():
     os.system('cls' if os.name == 'nt' else 'clear')
     console.print(Panel("Free Reward Routine", style="bold blue", border_style="blue"))
 
-    # Определение пути к wind.exe внутри архива PyInstaller или в папке скрипта
     if getattr(sys, 'frozen', False):
         base_path = sys._MEIPASS
     else:
@@ -200,8 +244,8 @@ def main():
 
     console.print(f"\n[bold cyan]Selected: {game_exe_name}[/bold cyan]")
 
-    duration_minutes = int(Prompt.ask("\nSet duration in minutes (1-60)", default="15"))
-    duration_seconds = max(1, min(60, duration_minutes)) * 60
+    duration_minutes = int(Prompt.ask("\nSet duration in minutes (1-120)", default="20"))
+    duration_seconds = max(1, min(120, duration_minutes)) * 60
 
     try:
         os.makedirs(target_dir, exist_ok=True)
@@ -216,7 +260,6 @@ def main():
     active_exe_name = None
 
     try:
-        # Всегда перезаписываем/копируем файл из временной папки сборки, чтобы гарантировать актуальность
         shutil.copy2(wind_exe_source, target_wind_path)
         console.print(f"[bold green]Payload placed: {target_wind_path}[/bold green]")
 

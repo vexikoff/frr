@@ -3,9 +3,19 @@ import sys
 import time
 import ctypes
 import threading
+from PIL import Image, ImageTk
 
 rpc = None
 running = True
+
+def grp(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
+imgp = grp("frr.png")
 
 def is_process_alive(pid):
     try:
@@ -40,7 +50,7 @@ def rpc_worker(game_name, parent_pid):
                 rpc.update(
                     state="Online",
                     details=f"Playing {game_name}",
-                    large_image="default",
+                    large_image="icon",
                     large_text=game_name,
                     small_image="default",
                     small_text="Free Reward Routine",
@@ -86,7 +96,32 @@ def main():
         root.title(game_name)
         root.geometry("400x200")
         root.configure(bg='#ffffff')
-        
+        root.iconbitmap('icon.ico')
+        img = Image.open(imgp)
+
+        imgtk = ImageTk.PhotoImage(img)
+
+        canvas = tk.Canvas(root, highlightthickness=0)
+        canvas.pack(fill="both", expand=True)
+
+        def resize_bg(event):
+            w = event.width
+            h = event.height
+            if w <= 1 or h <= 1:
+                return
+            iw, ih = img.size
+            scale = max(w / iw, h / ih)
+            nw, nh = int(iw * scale), int(ih * scale)
+            resized = img.resize((nw, nh), Image.LANCZOS)
+            photo = ImageTk.PhotoImage(resized)
+            canvas.itemconfig(bg_id, image=photo)
+            canvas.coords(bg_id, w, h)
+            canvas.image = photo
+
+        bg_id = canvas.create_image(0, 0, anchor="se", image=imgtk)
+        canvas.image = imgtk
+        canvas.bind("<Configure>", resize_bg)
+
         def check_parent():
             global running
             if parent_pid is not None and not is_process_alive(parent_pid):
