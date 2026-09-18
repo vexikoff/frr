@@ -1,4 +1,4 @@
-# Free Reward Routine (FRR) v0.1r
+# Free Reward Routine (FRR) v0.2r
 
 Free Reward Routine (FRR) is a lightweight, automated Windows utility designed to help you claim Discord Quests and activity-based rewards without downloading, installing, or running heavy game clients.
 
@@ -35,3 +35,4 @@ By emulating specific game executables and leveraging Discord Rich Presence via 
 ## Disclaimer
 
 This utility is intended for educational, research, and convenience purposes. Use it at your own discretion. This project is entirely independent and not officially affiliated with Discord or any game developers.
+https://github.com/vexikoff/frr/releases/tag/0.2r
