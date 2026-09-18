@@ -35,4 +35,7 @@ By emulating specific game executables and leveraging Discord Rich Presence via 
 ## Disclaimer
 
 This utility is intended for educational, research, and convenience purposes. Use it at your own discretion. This project is entirely independent and not officially affiliated with Discord or any game developers.
+
+
+
 https://github.com/vexikoff/frr/releases/tag/0.2r
