@@ -36,6 +36,7 @@ By emulating specific game executables and leveraging Discord Rich Presence via 
 
 This utility is intended for educational, research, and convenience purposes. Use it at your own discretion. This project is entirely independent and not officially affiliated with Discord or any game developers.
 
-
+Virustotal (1/68):
+https://www.virustotal.com/gui/file/9697a40162abd25b1df6738d9a676bdc0cf6076b0741311db4f1abd2b4543a0c
 
 https://github.com/vexikoff/frr/releases/tag/0.2r
