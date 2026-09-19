@@ -17,6 +17,8 @@ def grp(relative_path):
 
 imgp = grp("frr.png")
 
+ico = grp("icon.ico")
+
 def is_process_alive(pid):
     try:
         handle = ctypes.windll.kernel32.OpenProcess(0x0400, False, pid)
@@ -96,7 +98,7 @@ def main():
         root.title(game_name)
         root.geometry("400x200")
         root.configure(bg='#ffffff')
-        root.iconbitmap('icon.ico')
+        root.iconbitmap(ico)
         img = Image.open(imgp)
 
         imgtk = ImageTk.PhotoImage(img)

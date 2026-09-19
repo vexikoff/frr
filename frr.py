@@ -170,7 +170,7 @@ def main():
     global active_process, active_pid, active_exe_name
 
     os.system('cls' if os.name == 'nt' else 'clear')
-    console.print(Panel("Free Reward Routine", style="bold blue", border_style="blue"))
+    console.print(Panel("Free Reward Routine", style="bold cyan", border_style="magenta"))
 
     if getattr(sys, 'frozen', False):
         base_path = sys._MEIPASS
